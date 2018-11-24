@@ -5,7 +5,7 @@ const express = require('express')
 const router = express.Router();
 
 
-mongoose.connect('mongodb://localhost/vidly/customers', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/vidly', { useNewUrlParser: true })
     .then(() => console.log('Connected to vidly.customer db...'))
     .catch(error => console.log('Cannot connect to vidly.customer db...', error ))
 
@@ -36,6 +36,14 @@ router.get('/', async(req, res) => {
     res.send(customer)
 })
 
+router.get('/:id', async(req,res) => {
+    // find match
+    const foundCustomer = await Customer.findById(req.params.id)
+    if ( !foundCustomer ) return res.status(404).send('Customer not found.')
+    // send match 
+    res.send(foundCustomer)
+})
+
 router.post('/', async(req,res) => {
     const { error } = validateCustomer(req.body)
     if ( error ) return res.status(400).send(error.details[0].message)
@@ -56,16 +64,25 @@ router.put('/:id', async(req, res) => {
     if ( error ) return res.status(400).send(error.details.message)
 
     // find match
-    const updatedCustomer = await Customer.findOneAndUpdate(req.params.id, { name: req.body.name }, { isGold: req.body.isGold }, { phone: req.body.phone })
+    const updatedCustomer = await Customer.findOneAndUpdate(req.params.id, 
+        { 
+            name: req.body.name,
+            isGold: req.body.isGold,
+            phone: req.body.phone
+        }, { new: true }) // the new prop is for mongoose to know and display it
     if (!updatedCustomer) return res.status(404).send('Customer not found.')
 
     // update
     res.send(updatedCustomer)
 })
 
-router.delete(
-
-)
+router.delete('/:id', async(req, res) => {
+    // find match 
+    const deletedCustomer  = await Customer.findOneAndDelete(req.params.id)
+    if ( !deletedCustomer ) return res.status(404).send('Customer not found.')
+    // delete
+    res.send(deletedCustomer)
+})
 
 const validateCustomer = (genre) => {
     const schema = {
