@@ -50,12 +50,21 @@ router.post('/', async(req,res) => {
     res.send(customer)
 })
 
-router.put(
+router.put('/:id', async(req, res) => {
+    // validate
+    const { error } = validateCustomer(req.body)
+    if ( error ) return res.status(400).send(error.details.message)
 
-)
+    // find match
+    const updatedCustomer = await Customer.findOneAndUpdate(req.params.id, { name: req.body.name }, { isGold: req.body.isGold }, { phone: req.body.phone })
+    if (!updatedCustomer) return res.status(404).send('Customer not found.')
+
+    // update
+    res.send(updatedCustomer)
+})
 
 router.delete(
-    
+
 )
 
 const validateCustomer = (genre) => {
