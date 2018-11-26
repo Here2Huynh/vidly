@@ -7,7 +7,6 @@ mongoose.connect('mongodb://localhost/vidly', { useNewUrlParser: true })
     .catch(error => console.log('Cannot connect to vidly.customer db...', error ))
 
 
-
 const customerSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -36,5 +35,5 @@ const validateCustomer = (genre) => {
     return Joi.validate(genre,schema)
 }
 
-exports.Customer = Customer
+exports.customerSchema = customerSchema
 exports.validate = validateCustomer
