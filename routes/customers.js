@@ -1,11 +1,8 @@
 
-const { customerSchema, validate } = require('../models/customer')
+const { Customer, validate } = require('../models/customer')
 const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router();
-
-
-const Customer = mongoose.model('Customer', customerSchema)
 
 
 router.get('/', async(req, res) => {

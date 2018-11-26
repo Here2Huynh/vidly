@@ -2,12 +2,13 @@
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
+
 mongoose.connect('mongodb://localhost/vidly', { useNewUrlParser: true })
     .then(() => console.log('Connected to vidly.customer db...'))
     .catch(error => console.log('Cannot connect to vidly.customer db...', error ))
 
 
-const customerSchema = new mongoose.Schema({
+const Customer = mongoose.model('Customer', new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -24,7 +25,7 @@ const customerSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 50
     }
-})
+}))
 
 const validateCustomer = (genre) => {
     const schema = {
@@ -35,5 +36,5 @@ const validateCustomer = (genre) => {
     return Joi.validate(genre,schema)
 }
 
-exports.customerSchema = customerSchema
+exports.Customer = Customer
 exports.validate = validateCustomer

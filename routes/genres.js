@@ -1,10 +1,8 @@
 
-const { genreSchema, validate } = require('../models/genre')
+const { Genre, validate } = require('../models/genre')
 const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router()
-
-const Genre = mongoose.model('Genre', genreSchema)
 
 
 // get all data
