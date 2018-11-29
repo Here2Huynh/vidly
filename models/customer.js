@@ -27,13 +27,13 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
     }
 }))
 
-const validateCustomer = (genre) => {
+const validateCustomer = (customer) => {
     const schema = {
         name: Joi.string().min(5).max(50).required(),
         phone: Joi.string().min(10).max(50).required(),
         isGold: Joi.boolean()
     }
-    return Joi.validate(genre,schema)
+    return Joi.validate(customer,schema)
 }
 
 exports.Customer = Customer
